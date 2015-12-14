@@ -44,18 +44,25 @@ findBalanced [a] = a
 findBalanced [a,b] = getMoreBalanced a b
 findBalanced (a:b:bs) =
   let balanced = getMoreBalanced a b
-    in findBalanced (balanced:bs)
+    in if ( (difference balanced) == 0)
+      then balanced
+      else findBalanced (balanced:bs)
 
 
 -- GET MORE BALANCED PARTITION OUT OF TWO --
 getMoreBalanced :: (Integral a) => Partition a -> Partition a -> Partition a
-getMoreBalanced (a1,a2) (b1,b2) =
-  let diffA = abs ((sum a1) - (sum a2))
-    in let diffB = abs ((sum b1) - (sum b2))
+getMoreBalanced a b =
+  let diffA = difference a
+    in let diffB = difference b
       in
         if(diffA < diffB)
-          then (a1,a2)
-          else  (b1,b2)
+          then a
+          else b
+
+
+-- GET DIFFERENCE OF A PARTITION'S LISTS --
+difference :: (Integral a) => Partition a -> a
+difference (a,b) = abs ((sum a) - (sum b))
 
 
 -- TEST FUNCTION --
